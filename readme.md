@@ -161,10 +161,10 @@ sudo mv tectonic-worker /etc/sysconfig/
 sudo sed -i 's|KUBERNETES_DNS_SERVICE_IP=|KUBERNETES_DNS_SERVICE_IP=10.3.0.10|g' \
      /etc/kubernetes/kubesettings-local.env
 1. If the previous command doesn't work just create new file under /etc/kubernetes/kubesettings-local.env with the follow:
-   `KUBERNETES_DNS_SERVICE_IP=10.3.0.10`
+`KUBERNETES_DNS_SERVICE_IP=10.3.0.10`
 1. Also create /etc/sysconfig/tectonic-worker with the following:
-   `KUBERNETES_DNS_SERVICE_IP=10.3.0.10`
-    `CLUSTER_DOMAIN=<base domain of Tectonic cluster>`
+`KUBERNETES_DNS_SERVICE_IP=10.3.0.10
+CLUSTER_DOMAIN=<base domain of Tectonic cluster>`
 1. Setup Flannel configuration by executing:
    - cat > 10-flannel.conf << EOF
 {
@@ -178,7 +178,7 @@ EOF
 1. Create cni plugin net.d directory by executing `sudo mkdir -p /etc/kubernetes/cni/net.d/`
 1. Copy new flannel config by executing `sudo mv 10-flannel.conf /etc/kubernetes/cni/net.d/`
 1. Set SELinux to Permissive Mode by executing `sudo setenforce 0`
-1. To ensure SELinux is disable on reboot modify /etc/sysconfig
+1. To ensure SELinux is disable on reboot modify /etc/selinux/config
 1. Enable kubelet service by executing `sudo systemctl enable kubelet`
 1. Start kubelet service by executing `sudo systemctl start kubelet`
 1. Execute `sudo journalctl -f -u kubelet` to monitoring kubelet logs during startup
