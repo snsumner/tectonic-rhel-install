@@ -100,7 +100,7 @@ Prepare RHEL VM for use as Tectonic Worker nodes
 1. Enable sudo for core user by executing `usermod -aG wheel core`
 1. On machine where Tectonic installer will be executed need to setup ssh key for Core user by executing `ssh-copy-id -i ~/.ssh/id_rsa.pub core@worker-01`
 1. Login to RHEL VM as core
-1. Download tectonic-release RPM by executing `curl -LJO http://yum.prod.coreos.systems/repo/tectonic-rhel/el7/x86_64/Packages/tectonic-release-1.6.2-4.el7.noarch.rpm`
+1. Download tectonic-release RPM by executing `curl -LJO http://yum.prod.coreos.systems/repo/tectonic-rhel/el7/x86_64/Packages/tectonic-release-7-2.el7.noarch.rpm`
 1. Verify the signinature by executing `rpm -qip tectonic-release-1.6.2-4.el7.noarch.rpm`
 1. Install the tectonic-worker RPM by executing `sudo yum localinstall tectonic-release-1.6.2-4.el7.noarch.rpm -y`
 1. Fix tectonic.repo typo by executing `sudo sed -i 's|\.el7|el7|g' /etc/yum.repos.d/tectonic.repo`
@@ -160,6 +160,11 @@ EOF
 sudo mv tectonic-worker /etc/sysconfig/
 sudo sed -i 's|KUBERNETES_DNS_SERVICE_IP=|KUBERNETES_DNS_SERVICE_IP=10.3.0.10|g' \
      /etc/kubernetes/kubesettings-local.env
+1. If the previous command doesn't work just create new file under /etc/kubernetes/kubesettings-local.env with the follow:
+   KUBERNETES_DNS_SERVICE_IP=10.3.0.10
+1. Also create /etc/sysconfig/tectonic-worker with the following:
+   KUBERNETES_DNS_SERVICE_IP=10.3.0.10
+   CLUSTER_DOMAIN=<base domain of Tectonic cluster>
 1. Setup Flannel configuration by executing:
    - cat > 10-flannel.conf << EOF
 {
@@ -173,6 +178,7 @@ EOF
 1. Create cni plugin net.d directory by executing `sudo mkdir -p /etc/kubernetes/cni/net.d/`
 1. Copy new flannel config by executing `sudo mv 10-flannel.conf /etc/kubernetes/cni/net.d/`
 1. Set SELinux to Permissive Mode by executing `sudo setenforce 0`
+1. To ensure SELinux is disable on reboot modify /etc/sysconfig
 1. Enable kubelet service by executing `sudo systemctl enable kubelet`
 1. Start kubelet service by executing `sudo systemctl start kubelet`
 1. Execute `sudo journalctl -f -u kubelet` to monitoring kubelet logs during startup
