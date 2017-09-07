@@ -161,10 +161,10 @@ sudo mv tectonic-worker /etc/sysconfig/
 sudo sed -i 's|KUBERNETES_DNS_SERVICE_IP=|KUBERNETES_DNS_SERVICE_IP=10.3.0.10|g' \
      /etc/kubernetes/kubesettings-local.env
 1. If the previous command doesn't work just create new file under /etc/kubernetes/kubesettings-local.env with the follow:
-   KUBERNETES_DNS_SERVICE_IP=10.3.0.10
+   `KUBERNETES_DNS_SERVICE_IP=10.3.0.10`
 1. Also create /etc/sysconfig/tectonic-worker with the following:
-   KUBERNETES_DNS_SERVICE_IP=10.3.0.10
-   CLUSTER_DOMAIN=<base domain of Tectonic cluster>
+   `KUBERNETES_DNS_SERVICE_IP=10.3.0.10`
+    `CLUSTER_DOMAIN=<base domain of Tectonic cluster>`
 1. Setup Flannel configuration by executing:
    - cat > 10-flannel.conf << EOF
 {
